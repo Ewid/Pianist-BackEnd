@@ -22,10 +22,8 @@ AuthController.register = async (req, res) => {
     try {
         const newUser = await User.create({ username, password });
 
-
         const createdUser = await User.findById(newUser.id);
         if (!createdUser) {
-            console.error('Failed to fetch user details after registration for ID:', newUser.id);
             return res.status(500).json({ message: 'Error fetching user details after registration.' });
         }
 
@@ -38,7 +36,6 @@ AuthController.register = async (req, res) => {
         res.status(201).json({ message: 'User registered successfully.', user: createdUser, token });
 
     } catch (error) {
-        console.error('Registration Error:', error);
         if (error.message === 'Username already exists.') {
             return res.status(409).json({ message: error.message });
         }
@@ -80,9 +77,8 @@ AuthController.login = async (req, res) => {
         res.status(200).json({ message: 'Login successful.', token, user: userResponse });
 
     } catch (error) {
-        console.error('Login Error:', error);
         res.status(500).json({ message: 'Error logging in.', error: error.message });
     }
 };
 
-module.exports = AuthController; 
+module.exports = AuthController;
